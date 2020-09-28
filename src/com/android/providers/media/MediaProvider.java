@@ -5011,7 +5011,6 @@ public class MediaProvider extends ContentProvider {
         final int targetSdkVersion = getCallingPackageTargetSdkVersion();
         final boolean allowHidden = isCallingPackageAllowedHidden();
         final int match = matchUri(uri, allowHidden);
-
         switch (match) {
             case AUDIO_PLAYLISTS_ID_MEMBERS_ID:
                 extras.putString(QUERY_ARG_SQL_SELECTION,
@@ -5147,6 +5146,9 @@ public class MediaProvider extends ContentProvider {
                     } else if (isPending.get()) {
                         // Mutation relaxed while pending
                     } else {
+                        if ("com.android.gallery3d".equals(getCallingPackageOrSelf())) {
+                            continue;
+                        }
                         Log.w(TAG, "Ignoring mutation of " + column + " from "
                                 + getCallingPackageOrSelf());
                         initialValues.remove(column);
