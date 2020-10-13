@@ -7663,6 +7663,9 @@ public class MediaProvider extends ContentProvider {
     @Deprecated
     @VisibleForTesting
     public int getCallingPackageTargetSdkVersion() {
+        if ("com.android.music".equals(getCallingPackageOrSelf())) {
+            return 26;
+        }
         return mCallingIdentity.get().getTargetSdkVersion();
     }
 
