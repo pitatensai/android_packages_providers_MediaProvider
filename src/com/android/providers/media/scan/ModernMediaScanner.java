@@ -585,7 +585,7 @@ public class ModernMediaScanner implements MediaScanner {
             queryArgs.putInt(MediaStore.QUERY_ARG_MATCH_FAVORITE, MediaStore.MATCH_INCLUDE);
             final String[] projection = new String[] {FileColumns._ID, FileColumns.DATE_MODIFIED,
                     FileColumns.SIZE, FileColumns.MIME_TYPE, FileColumns.MEDIA_TYPE,
-                    FileColumns.IS_PENDING};
+                    FileColumns.IS_PENDING, MediaStore.MediaColumns.OWNER_PACKAGE_NAME};
 
             final Matcher matcher = FileUtils.PATTERN_EXPIRES_FILE.matcher(realFile.getName());
             // If IS_PENDING is set by FUSE, we should scan the file and update IS_PENDING to zero.
@@ -600,6 +600,13 @@ public class ModernMediaScanner implements MediaScanner {
                     final String mimeType = c.getString(3);
                     final int mediaType = c.getInt(4);
                     isPendingFromFuse &= c.getInt(5) != 0;
+                    //make soundrecorder not change media_type
+                    final String owner_package_name = c.getString(6);
+                    if ("com.android.soundrecorder".equals(owner_package_name)
+                        && null != mimeType) {
+                        actualMimeType = mimeType;
+                        actualMediaType = mediaType;
+                    }
 
                     // Remember visiting this existing item, even if we skipped
                     // due to it being unchanged; this is needed so we don't

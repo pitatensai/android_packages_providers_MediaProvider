@@ -3330,6 +3330,9 @@ public class MediaProvider extends ContentProvider {
                     // Apps with MANAGE_EXTERNAL_STORAGE have all files access, hence they are
                     // allowed to insert files anywhere.
                 } else {
+                    if ("com.android.soundrecorder".equals(getCallingPackageOrSelf())) {
+                        continue;
+                    }
                     Log.w(TAG, "Ignoring mutation of  " + column + " from "
                             + getCallingPackageOrSelf());
                     initialValues.remove(column);
@@ -7756,7 +7759,8 @@ public class MediaProvider extends ContentProvider {
     @Deprecated
     @VisibleForTesting
     public int getCallingPackageTargetSdkVersion() {
-        if ("com.android.music".equals(getCallingPackageOrSelf())) {
+        if ("com.android.music".equals(getCallingPackageOrSelf())
+            || "com.android.soundrecorder".equals(getCallingPackageOrSelf())) {
             return 26;
         }
         return mCallingIdentity.get().getTargetSdkVersion();
