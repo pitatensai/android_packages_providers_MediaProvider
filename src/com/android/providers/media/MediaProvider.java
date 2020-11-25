@@ -3287,9 +3287,6 @@ public class MediaProvider extends ContentProvider {
                 if (isCallingPackageSelf() || isCallingPackageLegacyWrite()) {
                     // Mutation allowed
                 } else {
-                    if ("com.android.soundrecorder".equals(getCallingPackageOrSelf())) {
-                        continue;
-                    }
                     Log.w(TAG, "Ignoring mutation of  " + column + " from "
                             + getCallingPackageOrSelf());
                     initialValues.remove(column);
@@ -7666,8 +7663,7 @@ public class MediaProvider extends ContentProvider {
     @Deprecated
     @VisibleForTesting
     public int getCallingPackageTargetSdkVersion() {
-        if ("com.android.music".equals(getCallingPackageOrSelf())
-            || "com.android.soundrecorder".equals(getCallingPackageOrSelf())) {
+        if ("com.android.music".equals(getCallingPackageOrSelf())) {
             return 26;
         }
         return mCallingIdentity.get().getTargetSdkVersion();
