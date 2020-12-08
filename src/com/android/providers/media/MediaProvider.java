@@ -2721,7 +2721,7 @@ public class MediaProvider extends ContentProvider {
             final File actual = new File(values.getAsString(MediaColumns.DATA))
                     .getCanonicalFile();
             if (!FileUtils.contains(allowed, actual)) {
-                throw new VolumeArgumentException(actual, allowed);
+                //throw new VolumeArgumentException(actual, allowed);
             }
         } catch (IOException e) {
             throw new VolumeNotFoundException(volumeName);
